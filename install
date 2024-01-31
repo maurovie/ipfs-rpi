@@ -31,20 +31,18 @@ ipfs_version=$(curl -s https://dist.ipfs.io/go-ipfs/versions | tail -1)
 ipfs_version=${1-$ipfs_version}
 ipfs_version="v${ipfs_version#v}"
 
-echo ">>> Installing IPFS version $ipfs_version"
+echo ">>> Installing IPFS version v0.26.0"
 
 tar_gz_destination=/tmp/go-ipfs_${ipfs_version}_${ipfs_arch}.tar.gz
-wget "https://dist.ipfs.io/go-ipfs/${ipfs_version}/go-ipfs_${ipfs_version}_${ipfs_arch}.tar.gz" \
-  -q --show-progress \
-  -O $tar_gz_destination
 
-if [ ! -f $tar_gz_destination ]; then
+
+if [ ! -f /tmp/go-ipfs_v0.26.0_linux-arm.tar.gz ]; then
   echo ">>> Failed to download IPFS"
   exit 1
 fi
 
 ipfs_destination=/usr/local/bin/ipfs
-tar xzf $tar_gz_destination -C /tmp
+tar xzf /tmp/go-ipfs_v0.26.0_linux-arm.tar.gz -C /tmp
 sudo install /tmp/go-ipfs/ipfs $ipfs_destination
 
 echo ">>> Starting IPFS"
@@ -88,6 +86,6 @@ else
   echo ">>> Unable to detect init system - you don't seem to be using systemd or upstart. The IPFS daemon will have to be controlled manually."
 fi
 
-rm $tar_gz_destination
+rm /tmp/go-ipfs_v0.26.0_linux-arm.tar.gz
 
 echo ">>> All done."
